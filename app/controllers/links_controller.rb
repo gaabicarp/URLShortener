@@ -4,17 +4,29 @@ class LinksController < ApplicationController
         @links = Link.all
         render json: @links
     end    
+    #GET 1 links
     def show
-        @links = Link.find(params[:id])
+        @links = Link.find_by(short_url: params[:short_url])
         render json: @links
     end
-    def new
-        @links = Link.new
-    end
+    #POST link
     def create
-        @link = Link.new(short_url: params[:links][:short_url],
-                         original_url: params[:links][:original_url])
-        @link.save
-        redirect_to @link
+        @link = Link.new(original_url: params[:links][:original_url])
+
+        if @link.save
+            redirect_to @link
+        else
+            render json: '{ok: 0}'
+        end
+    end
+    #DELETE link
+    def destroy
+        @link = Link.find(params[:id])
+        @link.destroy
+    end
+
+    private
+    def article_params
+            params.require(:links).permit(:original_url)
     end
 end
