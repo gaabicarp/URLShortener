@@ -8,6 +8,7 @@ class LinksController < ApplicationController
     def show
         link = Link.find_by(short_url: params[:id])
         #binding.pry
+        link.update_views_count
         redirect_to link.original_url
     end
     #POST link
