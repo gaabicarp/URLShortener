@@ -6,19 +6,23 @@ class LinksController < ApplicationController
     end    
     #GET 1 links
     def show
-        @links = Link.find_by(short_url: params[:short_url])
-        render json: @links
+        link = Link.find_by(short_url: params[:id])
+        #binding.pry
+        redirect_to link.original_url
     end
     #POST link
     def create
-        @link = Link.new(original_url: params[:links][:original_url])
-
-        if @link.save
-            redirect_to @link
+        shortener = Shortener.new(link_params[:original_url])
+        @link = shortener.generate_short_link
+        #binding.pry
+        if @link.persisted?
+            render json: @link
         else
-            render json: '{ok: 0}'
+            render json: {error: 1}
         end
     end
+
+
     #DELETE link
     def destroy
         @link = Link.find(params[:id])
@@ -26,7 +30,7 @@ class LinksController < ApplicationController
     end
 
     private
-    def article_params
-            params.require(:links).permit(:original_url)
+    def link_params
+            params.require(:link).permit(:original_url)
     end
 end

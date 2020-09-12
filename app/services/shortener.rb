@@ -1,6 +1,5 @@
-require 'digest/sha2'
-
 class Shortener
+
     attr_reader :url, :link_model
     
     def initialize(url, link_model = Link)
@@ -9,20 +8,19 @@ class Shortener
     end
 
     def generate_short_link
-        link_model.create(original_url:url, short_url: short_url)
+        shrt_url = short_url_cr
+        link_model.create(original_url:url, short_url: shrt_url , views_count: 0)
     end
 
 
-    def short_url
-        i = 0
+    def short_url_cr
         loop do
-            code = get_fresh_code(i)
+            code = get_fresh_code
             break code unless link_model.exists?(short_url: code)
-            i = i + 1 
         end
     end
 
-    def get_fresh_code(i)
-        Digest::SHA256.hexdigest(url)[i..(i+6)]
+    def get_fresh_code
+        SecureRandom.uuid[0..6]
     end
 end
