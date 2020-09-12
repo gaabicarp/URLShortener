@@ -1,0 +1,40 @@
+<div class="navbar">
+</div>
+
+<div id="snackbar">{{mensaje}}</div>
+
+<div class="inputSection">
+    <div class="inputContainer">
+        <input type="text" ng-model="url">
+        <button class="button" ng-click="postUrl()">ACORTAR</button>
+    </div>
+</div>
+
+<div class="cardsSection"> 
+
+    <div class="cardsContainer">
+         
+        <div class="card" ng-repeat="link in links">
+            <div class="card-header">
+                <div class="titles">
+                    <p><b>{{'https://localhost:3000/' + link.short_url}}</b></p>
+                    <p class="subtitle">Accedido {{link.views_count}} veces</p>
+                </div>
+                <div class="icons" ng-click="copyToClipboard(link.short_url)">
+                    <button class="btnIcon">
+                        <i class="far fa-copy icons"></i>
+                    </button>
+                    <button class="btnIcon" ng-click="deleteUrl(link.id)">
+                        <i class="far fa-trash-alt icons"></i>
+                    </button>
+                </div>
+            </div>
+            <hr>
+            <div class="card-body">
+                <p><b>URL original: {{link.original_url}}</b></p>
+            </div>
+        </div>
+
+    </div>
+
+</div>

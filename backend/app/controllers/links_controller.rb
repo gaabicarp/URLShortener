@@ -27,7 +27,9 @@ class LinksController < ApplicationController
     def destroy
         @link = Link.find(params[:id])
         @link.destroy
-        render json: {ok: 0}
+
+        @link = Link.all
+        render json: @link
     end
 
     private
